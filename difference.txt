@@ -1,0 +1,25 @@
+difference between sql.db and pgx.pool in golang
+
+sql.db there is no connection pool, pgx.pool there is a connection pool
+connection pool is a collection of connections that can be reused like a cache to improve performance 
+sql.db is a connection to the database, pgx.pool is a connection pool to the database
+
+example in sql.db not in code but definition
+
+db, err := sql.Open("postgres", "user=foo dbname=bar sslmode=disable")
+if err != nil {
+    log.Fatal(err)
+}
+
+rows, err := db.Query("SELECT * FROM users")
+
+example in pgx.pool not in code but definition
+
+pool, err := pgxpool.Connect(context.Background(), "postgresql://user:password@localhost:5432/database")
+if err != nil {
+    log.Fatal("Unable to connect to database: ", err)
+}
+
+rows, err := pool.Query(context.Background(), "SELECT * FROM users")
+
+rows is a result set, which is a collection of rows and also a cursor that points to the current row
